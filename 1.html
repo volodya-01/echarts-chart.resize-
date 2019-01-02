@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="mainchart" style="width: 100%;height:360px;"></div>
+<div id="active" style="width: 100%;height:415px;"></div>
+<script src="echarts.min.js"></script>
+<script>
+    function mainchart() {
+        // 基于准备好的dom，初始化echarts实例
+        var resourceChart = echarts.init(document.getElementById('mainchart'), 'macarons'); //macarons主题
+        var activeChart = echarts.init(document.getElementById('active'), 'macarons');
+        // 指定图表的配置项和数据
+        option = {
+            title: {
+                text: '用户在线率/资源占用率',
+                textStyle: {
+                    color: '#333',
+                    fontStyle: 'normal',
+                    fontWeight: "600",
+                    fontFamily: "microsoft yahei",
+                    fontSize: 16
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'line'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                x: 'right',
+                data: ['用户在线率', '磁盘', '内存']
+            },
+            grid: {
+                x: '40px',
+                y: '50px',
+                width: '95%'
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['8:10', '8:20', '8:30', '8:40', '8:50', '9:00', '9:10']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '用户在线率',
+                    type: 'line',
+                    data: [50, 59, 67, 53, 72, 65, 70]
+                },
+                {
+                    name: '磁盘',
+                    type: 'line',
+                    data: [61, 72, 72, 65, 83, 82, 90]
+                },
+                {
+                    name: '内存',
+                    type: 'line',
+                    data: [55, 67, 62, 75, 93, 72, 80],
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    } 
+                }
+            ]
+        };
+
+        // 指定图表的配置项和数据
+        option2 = {
+            title: {
+                text: '活跃用户TOP',
+                textStyle: {
+                    color: '#333',
+                    fontStyle: 'normal',
+                    fontWeight: "600",
+                    fontFamily: "microsoft yahei",
+                    fontSize: 16
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'none'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '8%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['李雪', '周成龙', '张敏', '元芳菲', '李菲儿', '陈洁', '张敏', '元芳菲', '李菲儿', '陈洁'],
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                    //设置字体倾斜  
+                    axisLabel: {
+                        rotate: 45//倾斜度 -90 至 90 默认为0  
+
+                    },
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '2017年',
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    { offset: 0, color: '#bcd1ff' },
+                                    { offset: 1, color: '#3964c1' }
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    { offset: 0, color: '#bcd1ff' },
+                                    { offset: 1, color: '#2851a7' }
+                                ]
+                            )
+                        }
+                    },
+                    data: [100, 300, 152, 121594, 134141, 81807, 31000, 121594, 134141, 81807]
+                }
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        resourceChart.setOption(option);
+        activeChart.setOption(option2);
+        /*窗口自适应，关键代码*/
+        setTimeout(function () {
+            window.onresize = function () {
+                resourceChart.resize();
+                activeChart.resize();
+            }
+        }, 200)
+    };
+</script>
+</body>
+</html>

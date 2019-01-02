@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>vue+chart</title>
+  <script src="echarts.min.js"></script>
+  <script src="vue.js"></script>
+  <style>
+    .button {
+      float: left;
+      width: 150px;
+      height: 60px;
+      color: #CC3333;
+      border: 2px solid #CC3333;
+      background-color: #3399CC;
+      line-height: 60px;
+      text-align: center;
+      font-size: 36px;
+    }
+
+    .button:hover {
+      float: left;
+      width: 150px;
+      height: 60px;
+      color: #3399CC;
+      border: 2px solid #3399CC;
+      background-color: #CC3333;
+      line-height: 60px;
+      text-align: center;
+      font-size: 36px;
+    }
+
+    .chart {
+      margin: 0 auto;
+    }
+
+    #but {
+      width: 310px;
+      margin: 0 auto;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="app">
+    <div id="panel">
+      <div class="chart" id="main" style="width:300px;height:300px"></div>
+    </div>
+    <div id="but">
+      <div id="add" class="button" @click="add">放大</div>
+      <div id="reduce" class="button" @click="reduce">缩小</div>
+    </div>
+  </div>
+</body>
+<script>
+var vm=new Vue({
+el:"#app",
+data:{
+size:300,
+},
+computed: {
+style: function () {
+return "width:"+this.width+"px;height:"+this.height+"px"
+}
+},
+methods:{
+add:function(){
+if(this.size<900) { this.size=this.size+50;} else{ this.size=900; } }, reduce:function(){ if(this.size>300){
+  this.size=this.size-50;}
+  else{
+  this.size=300;
+  }
+  }
+  }
+  })
+  var myChart = echarts.init(document.getElementById('main'));
+  var option = {
+  title: {
+  text: 'ECharts 入门'
+  },
+  tooltip: {},
+  legend: {
+  data:['销量']
+  },
+  xAxis: {
+  data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+  },
+  yAxis: {},
+  series: [{
+  name: '销量',
+  type: 'bar',
+  data: [5, 20, 36, 10, 10, 20]
+  }]
+  };
+  myChart.setOption(option);
+  // 基于准备好的dom，初始化echarts实例
+  vm.$watch("size",function(newVal, oldVal){
+  var dom=document.getElementById('panel')
+  dom.innerHTML='<div class="chart" id="main" style="width:'+newVal+'px;height:'+newVal+'px"></div>';
+  var myChart = echarts.init(document.getElementById('main'));
+  myChart.setOption(option);
+  })
+</script>
+</html>
